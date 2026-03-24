@@ -6,45 +6,388 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0f172a">
-<title>Supplement Tracker</title>
+<title>💊 Supplement Tracker</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 50%,#0f172a 100%);color:#e2e8f0;min-height:100vh;min-height:100dvh}#app{max-width:480px;margin:0 auto;padding-bottom:80px;position:relative}.header{padding:20px 16px 12px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.06)}.header h1{font-size:22px;font-weight:700;background:linear-gradient(90deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}.header p{color:#64748b;font-size:12px;margin-top:4px}.content{padding:12px 16px}.tab-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;display:flex;background:rgba(15,23,42,0.95);backdrop-filter:blur(10px);border-top:1px solid rgba(255,255,255,0.08);z-index:50;padding-bottom:env(safe-area-inset-bottom)}.tab-btn{flex:1;padding:12px 0 10px;background:none;border:none;color:#64748b;font-size:11px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;border-top:2px solid transparent;transition:all 0.2s}.tab-btn.active{color:#a78bfa;font-weight:600;border-top-color:#a78bfa}.tab-btn .icon{font-size:20px}.progress-bar{height:6px;border-radius:3px;background:rgba(255,255,255,0.08);overflow:hidden;margin:12px 0}.progress-fill{height:100%;border-radius:3px;transition:width 0.5s ease}.progress-purple{background:linear-gradient(90deg,#6366f1,#a78bfa)}.progress-green{background:linear-gradient(90deg,#34d399,#4ade80)}.section-title{font-size:14px;font-weight:600;margin:16px 0 8px;display:flex;align-items:center;gap:6px}.section-title .notify-hint{font-size:10px;color:#475569;font-weight:400}.check-card{background:rgba(255,255,255,0.04);border-radius:14px;padding:14px 16px;border:1px solid rgba(255,255,255,0.06);cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:12px;margin-bottom:8px}.check-card.checked{border-color:var(--accent-40);background:var(--accent-15)}.checkbox{width:26px;height:26px;border-radius:8px;border:2px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:14px;transition:all 0.2s;color:transparent}.checked .checkbox{border-color:var(--accent);background:var(--accent-30);color:var(--accent)}.sup-name{font-size:14px;font-weight:600;transition:all 0.2s}.checked .sup-name{text-decoration:line-through;opacity:0.7}.sup-dose{font-size:11px;color:#64748b}.sup-emoji{font-size:16px}.supply-card{background:rgba(255,255,255,0.04);border-radius:14px;padding:14px 16px;border:1px solid rgba(255,255,255,0.06);margin-bottom:8px}.supply-card.warn{border-color:rgba(251,191,35,0.3)}.supply-card.danger{border-color:rgba(239,68,68,0.3)}.badge{display:inline-block;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:600}.badge.ok{background:rgba(52,211,153,0.15);color:#34d399}.badge.warn{background:rgba(251,191,35,0.15);color:#fbbf24}.badge.danger{background:rgba(239,68,68,0.15);color:#ef4444}.supply-meta{display:flex;justify-content:space-between;font-size:11px;color:#64748b}.date-input{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:4px 8px;color:#e2e8f0;font-size:12px;outline:none}input[type="date"]::-webkit-calendar-picker-indicator{filter:invert(0.7)}.info-card{background:rgba(255,255,255,0.04);border-radius:14px;padding:16px;margin-bottom:10px}.warning-box{background:rgba(251,191,35,0.08);border:1px solid rgba(251,191,35,0.2);border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:13px;line-height:1.5;color:#fbbf24}.tag{display:inline-block;font-size:11px;padding:3px 10px;border-radius:8px;margin-right:6px;margin-bottom:4px}.cost-footer{background:rgba(255,255,255,0.03);border-radius:12px;padding:12px 14px;margin-top:16px;font-size:11px;color:#475569;line-height:1.6;text-align:center}.confetti-overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.5);z-index:100;animation:fadeIn 0.3s ease}.confetti-content{text-align:center;font-size:48px;animation:bounce 0.5s ease}.hidden{display:none}@keyframes fadeIn{from{opacity:0}to{opacity:1}}@keyframes bounce{0%{transform:scale(0.5)}60%{transform:scale(1.1)}100%{transform:scale(1)}}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+  color: #e2e8f0;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+#app { max-width: 480px; margin: 0 auto; padding-bottom: 80px; position: relative; }
+.header { padding: 20px 16px 12px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.header h1 {
+  font-size: 22px; font-weight: 700;
+  background: linear-gradient(90deg, #a78bfa, #60a5fa);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.header p { color: #64748b; font-size: 12px; margin-top: 4px; }
+.content { padding: 12px 16px; }
+
+/* Tab Bar */
+.tab-bar {
+  position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 100%; max-width: 480px; display: flex;
+  background: rgba(15,23,42,0.95); backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255,255,255,0.08); z-index: 50;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.tab-btn {
+  flex: 1; padding: 12px 0 10px; background: none; border: none;
+  color: #64748b; font-size: 11px; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  border-top: 2px solid transparent; transition: all 0.2s;
+}
+.tab-btn.active { color: #a78bfa; font-weight: 600; border-top-color: #a78bfa; }
+.tab-btn .icon { font-size: 20px; }
+
+/* Progress */
+.progress-bar { height: 6px; border-radius: 3px; background: rgba(255,255,255,0.08); overflow: hidden; margin: 12px 0; }
+.progress-fill { height: 100%; border-radius: 3px; transition: width 0.5s ease; }
+.progress-purple { background: linear-gradient(90deg, #6366f1, #a78bfa); }
+.progress-green { background: linear-gradient(90deg, #34d399, #4ade80); }
+
+/* Section */
+.section-title { font-size: 14px; font-weight: 600; margin: 16px 0 8px; display: flex; align-items: center; gap: 6px; }
+.section-title .notify-hint { font-size: 10px; color: #475569; font-weight: 400; }
+
+/* Cards */
+.check-card {
+  background: rgba(255,255,255,0.04); border-radius: 14px; padding: 14px 16px;
+  border: 1px solid rgba(255,255,255,0.06); cursor: pointer;
+  transition: all 0.2s; display: flex; align-items: center; gap: 12px; margin-bottom: 8px;
+}
+.check-card.checked { border-color: var(--accent-40); background: var(--accent-15); }
+.checkbox {
+  width: 26px; height: 26px; border-radius: 8px;
+  border: 2px solid rgba(255,255,255,0.15); display: flex;
+  align-items: center; justify-content: center; flex-shrink: 0;
+  font-size: 14px; transition: all 0.2s; color: transparent;
+}
+.checked .checkbox { border-color: var(--accent); background: var(--accent-30); color: var(--accent); }
+.sup-name { font-size: 14px; font-weight: 600; transition: all 0.2s; }
+.checked .sup-name { text-decoration: line-through; opacity: 0.7; }
+.sup-dose { font-size: 11px; color: #64748b; }
+.sup-emoji { font-size: 16px; }
+
+/* Supply */
+.supply-card {
+  background: rgba(255,255,255,0.04); border-radius: 14px; padding: 14px 16px;
+  border: 1px solid rgba(255,255,255,0.06); margin-bottom: 8px;
+}
+.supply-card.warn { border-color: rgba(251,191,35,0.3); }
+.supply-card.danger { border-color: rgba(239,68,68,0.3); }
+.badge {
+  display: inline-block; padding: 2px 10px; border-radius: 20px;
+  font-size: 11px; font-weight: 600;
+}
+.badge.ok { background: rgba(52,211,153,0.15); color: #34d399; }
+.badge.warn { background: rgba(251,191,35,0.15); color: #fbbf24; }
+.badge.danger { background: rgba(239,68,68,0.15); color: #ef4444; }
+.supply-meta { display: flex; justify-content: space-between; font-size: 11px; color: #64748b; }
+.date-input {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px; padding: 4px 8px; color: #e2e8f0; font-size: 12px; outline: none;
+}
+input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.7); }
+
+/* Stack Info */
+.info-card {
+  background: rgba(255,255,255,0.04); border-radius: 14px; padding: 16px;
+  margin-bottom: 10px;
+}
+.warning-box {
+  background: rgba(251,191,35,0.08); border: 1px solid rgba(251,191,35,0.2);
+  border-radius: 12px; padding: 12px 14px; margin-bottom: 16px;
+  font-size: 13px; line-height: 1.5; color: #fbbf24;
+}
+.tag {
+  display: inline-block; font-size: 11px; padding: 3px 10px; border-radius: 8px; margin-right: 6px; margin-bottom: 4px;
+}
+.cost-footer {
+  background: rgba(255,255,255,0.03); border-radius: 12px; padding: 12px 14px;
+  margin-top: 16px; font-size: 11px; color: #475569; line-height: 1.6; text-align: center;
+}
+
+/* Confetti overlay */
+.confetti-overlay {
+  position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+  background: rgba(0,0,0,0.5); z-index: 100; animation: fadeIn 0.3s ease;
+}
+.confetti-content { text-align: center; font-size: 48px; animation: bounce 0.5s ease; }
+
+.hidden { display: none; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes bounce { 0% { transform: scale(0.5); } 60% { transform: scale(1.1); } 100% { transform: scale(1); } }
 </style>
 </head>
-<body><div id="app">
-  <div class="header"><h1>💊 Supplement Tracker</h1><p>每日維他命追蹤 · <span id="today-date"></span></p></div>
+<body>
+<div id="app">
+  <div class="header">
+    <h1>💊 Supplement Tracker</h1>
+    <p>每日維他命追蹤 · <span id="today-date"></span></p>
+  </div>
   <div class="content" id="content"></div>
   <div class="tab-bar">
     <button class="tab-btn active" data-tab="today"><span class="icon">📋</span>今日</button>
     <button class="tab-btn" data-tab="supply"><span class="icon">📦</span>補貨</button>
     <button class="tab-btn" data-tab="stack"><span class="icon">💊</span>Stack</button>
   </div>
-  <div class="confetti-overlay hidden" id="confetti"><div class="confetti-content"><div>🎉</div><div style="font-size:18px;margin-top:8px;color:#34d399;font-weight:700">今日全部完成！</div></div></div>
+  <div class="confetti-overlay hidden" id="confetti">
+    <div class="confetti-content">
+      <div>🎉</div>
+      <div style="font-size:18px;margin-top:8px;color:#34d399;font-weight:700">今日全部完成！</div>
+    </div>
+  </div>
 </div>
+
 <script>
-const S=[{id:"d3k2",name:"Vitamin D3+K2",brand:"Sports Research",dose:"5000IU D3 + 100mcg K2 MK-7",perDay:1,unit:"顆",perBottle:60,timeSlot:"morning",emoji:"☀️",color:"#fbbf24",benefit:"骨骼健康、免疫調節、端粒保護",note:""},{id:"k2extra",name:"K2 額外補充",brand:"單獨 K2 MK-7",dose:"100mcg MK-7",perDay:1,unit:"顆",perBottle:120,timeSlot:"morning",emoji:"🦴",color:"#a3e635",benefit:"引導鈣沉積到骨骼、保護血管彈性",note:"搭配 D3 總計 200mcg K2"},{id:"omega3",name:"Omega-3 魚油",brand:"Sports Research Triple Strength",dose:"每次 2 顆",perDay:2,unit:"顆",perBottle:120,timeSlot:"morning",emoji:"🐟",color:"#38bdf8",benefit:"心血管保護、抗發炎",note:"注意 EPA+DHA 實際含量"},{id:"theanine",name:"L-Theanine",brand:"NOW Foods 200mg",dose:"200mg",perDay:1,unit:"顆",perBottle:120,timeSlot:"morning",emoji:"🧠",color:"#c084fc",benefit:"增加 Alpha 腦波、搭配咖啡 = 心流組合",note:"搭配咖啡效果最佳"},{id:"creatine",name:"肌酸 Creatine",brand:"Monohydrate 粉末",dose:"5g",perDay:5,unit:"g",perBottle:500,timeSlot:"anytime",emoji:"💪",color:"#f87171",benefit:"肌力、爆發力、認知功能",note:"⚠️ 需監測腎功能（因服用貝樂克）"},{id:"magnesium",name:"鎂 Magnesium Glycinate",brand:"Doctor's Best",dose:"400mg 元素鎂（4顆）",perDay:4,unit:"顆",perBottle:240,timeSlot:"bedtime",emoji:"🌙",color:"#818cf8",benefit:"助眠放鬆、肌肉恢復、300+酶反應",note:"甘胺酸鎂不易腹瀉"},{id:"glycine",name:"甘胺酸 Glycine",brand:"粉末",dose:"3g",perDay:3,unit:"g",perBottle:454,timeSlot:"bedtime",emoji:"✨",color:"#67e8f9",benefit:"GlyNAC 抗老組合、膠原蛋白合成、助眠",note:"微甜，可直接含著吃或加水"},{id:"nac",name:"NAC",brand:"NOW Foods 600mg",dose:"1200mg（2顆）",perDay:2,unit:"顆",perBottle:250,timeSlot:"bedtime",emoji:"🛡️",color:"#4ade80",benefit:"穀胱甘肽前驅物、肝臟保護、GlyNAC 組合",note:"空腹吸收較好，對 B 肝帶原者可能有益"},{id:"taurine",name:"牛磺酸 Taurine",brand:"粉末",dose:"2g",perDay:2,unit:"g",perBottle:500,timeSlot:"bedtime",emoji:"⚡",color:"#fb923c",benefit:"2023 Science 期刊：延長小鼠壽命 10-12%",note:"安全性極高，可與其他粉末混合"}];
-const TS={morning:{label:"早餐 ~07:30",icon:"🌅",color:"#fbbf24",notifyTime:"07:30"},anytime:{label:"任何時間",icon:"⏰",color:"#60a5fa",notifyTime:null},bedtime:{label:"睡前 ~00:00",icon:"🌙",color:"#a78bfa",notifyTime:"23:45"}};
-const td=()=>new Date().toISOString().split("T")[0];let ct="today",ci={},cd=td(),sd={};S.forEach(s=>sd[s.id]=td());
-try{const v=JSON.parse(localStorage.getItem("supTracker"));if(v){if(v.checkedDate===td())ci=v.checkedItems||{};sd={...sd,...v.startDates};}}catch(e){}
-function sv(){try{localStorage.setItem("supTracker",JSON.stringify({checkedItems:ci,checkedDate:cd,startDates:sd}));}catch(e){}}if("Notification"in window&&Notification.permission==="default")Notification.requestPermission();
-setInterval(()=>{const n=new Date(),hm=String(n.getHours()).padStart(2,"0")+":"+String(n.getMinutes()).padStart(2,"0");if(hm==="07:30"){const c=S.filter(s=>s.timeSlot==="morning"&&!ci[s.id]).length;if(c>0&&Notification.permission==="granted")new Notification("🌅 早餐維他命提醒",{body:"還有 "+c+" 項早餐補充品未服用"});}if(hm==="23:45"){const c=S.filter(s=>s.timeSlot==="bedtime"&&!ci[s.id]).length;if(c>0&&Notification.permission==="granted")new Notification("🌙 睡前維他命提醒",{body:"還有 "+c+" 項睡前補充品未服用"});}},60000);
-setInterval(()=>{if(cd!==td()){ci={};cd=td();sv();render();}},30000);
-function dl(id){const s=S.find(x=>x.id===id),st=new Date(sd[id]),nw=new Date(td()),p=Math.floor((nw-st)/864e5),t=Math.floor(s.perBottle/s.perDay);return Math.max(0,t-p);}
-function ed(id){const s=S.find(x=>x.id===id),st=new Date(sd[id]),t=Math.floor(s.perBottle/s.perDay),e=new Date(st);e.setDate(e.getDate()+t);return e.toISOString().split("T")[0];}
-function cr(){return Math.round(Object.values(ci).filter(Boolean).length/S.length*100);}
-function render(){document.getElementById("today-date").textContent=td();const c=document.getElementById("content");if(ct==="today")c.innerHTML=rToday();else if(ct==="supply")c.innerHTML=rSupply();else c.innerHTML=rStack();bindEv();}
-function rToday(){const r=cr(),d=Object.values(ci).filter(Boolean).length;let h='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px"><span style="font-size:13px;color:#94a3b8">今日進度</span><span style="font-size:13px;font-weight:600;color:'+(r===100?'#34d399':'#a78bfa')+'">'+r+'%</span></div><div class="progress-bar"><div class="progress-fill '+(r===100?'progress-green':'progress-purple')+'" style="width:'+r+'%"></div></div><div style="font-size:11px;color:#475569;margin-bottom:8px;text-align:center">'+d+' / '+S.length+' 已服用</div>';
-for(const[slot,info]of Object.entries(TS)){const items=S.filter(s=>s.timeSlot===slot);h+='<div class="section-title" style="color:'+info.color+'"><span>'+info.icon+'</span> '+info.label+(info.notifyTime?'<span class="notify-hint">（'+info.notifyTime+' 提醒）</span>':'')+'</div>';
-for(const sup of items){const ck=ci[sup.id];h+='<div class="check-card '+(ck?'checked':'')+'" data-check="'+sup.id+'" style="--accent:'+sup.color+';--accent-15:'+sup.color+'15;--accent-30:'+sup.color+'30;--accent-40:'+sup.color+'40"><div class="checkbox">'+(ck?'✓':'')+'</div><div style="flex:1"><div style="display:flex;align-items:center;gap:6px;margin-bottom:2px"><span class="sup-emoji">'+sup.emoji+'</span><span class="sup-name" style="color:'+(ck?sup.color:'#e2e8f0')+'">'+sup.name+'</span></div><div class="sup-dose">'+sup.dose+'</div></div></div>';}}return h;}function rSupply(){const sorted=[...S].sort((a,b)=>dl(a.id)-dl(b.id));let h='<div style="font-size:13px;color:#94a3b8;margin-bottom:12px">依剩餘天數排序，越少越前面</div>';
-for(const sup of sorted){const d=dl(sup.id),edt=ed(sup.id),tt=Math.floor(sup.perBottle/sup.perDay),pct=Math.min(100,Math.round(((tt-d)/tt)*100)),cls=d<=7?'danger':d<=14?'warn':'',bc=d<=7?'danger':d<=14?'warn':'ok',bg=d<=7?'linear-gradient(90deg,#ef4444,#f87171)':d<=14?'linear-gradient(90deg,#f59e0b,#fbbf24)':'linear-gradient(90deg,#6366f1,#a78bfa)';
-h+='<div class="supply-card '+cls+'"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:18px">'+sup.emoji+'</span><span style="font-weight:600;font-size:14px">'+sup.name+'</span></div><span class="badge '+bc+'">'+(d===0?'已用完':'剩 '+d+' 天')+'</span></div><div class="progress-bar" style="margin-bottom:8px"><div class="progress-fill" style="width:'+pct+'%;background:'+bg+'"></div></div><div class="supply-meta"><span>每日 '+sup.perDay+sup.unit+' / 每瓶 '+sup.perBottle+sup.unit+'</span><span>預計 '+edt+' 用完</span></div><div style="margin-top:8px;display:flex;align-items:center;gap:8px"><span style="font-size:11px;color:#64748b">開始日期：</span><input type="date" class="date-input" data-dateid="'+sup.id+'" value="'+sd[sup.id]+'"></div></div>';}return h;}
-function rStack(){let h='<div class="warning-box">⚠️ <strong>B 肝帶原注意事項</strong><br>• 肌酸需定期監測腎功能（eGFR、肌酐），因貝樂克經腎臟排泄<br>• 已排除 Ashwagandha（有肝毒性報告，慢性肝病禁用）<br>• NAC 對 B 肝帶原者可能有益（支持肝臟穀胱甘肽）<br>• 下次回診請將此清單給肝膽科醫生確認</div>';
-for(const[slot,info]of Object.entries(TS)){const items=S.filter(s=>s.timeSlot===slot);h+='<div class="section-title" style="color:'+info.color+'"><span>'+info.icon+'</span> '+info.label+'</div>';
-for(const sup of items){const iw=sup.note.startsWith("⚠️");h+='<div class="info-card" style="border:1px solid '+sup.color+'20"><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:22px">'+sup.emoji+'</span><div><div style="font-weight:700;font-size:15px;color:'+sup.color+'">'+sup.name+'</div><div style="font-size:11px;color:#64748b">'+sup.brand+'</div></div></div><div style="margin-bottom:8px"><span class="tag" style="background:'+sup.color+'15;color:'+sup.color+'">'+sup.dose+'</span><span class="tag" style="background:rgba(255,255,255,0.05);color:#94a3b8">每日 '+sup.perDay+sup.unit+'</span></div><div style="font-size:13px;color:#94a3b8;line-height:1.5;margin-bottom:4px">'+sup.benefit+'</div>'+(sup.note?'<div style="font-size:12px;color:'+(iw?'#fbbf24':'#64748b')+';font-style:italic;margin-top:4px">'+sup.note+'</div>':'')+'</div>';}}
-h+='<div class="cost-footer">預估月費約 US$43（≈NT$1,400）<br>基於 iHerb 價格估算</div>';return h;}
-function bindEv(){document.querySelectorAll("[data-check]").forEach(el=>{el.onclick=()=>{ci[el.dataset.check]=!ci[el.dataset.check];sv();render();if(cr()===100){document.getElementById("confetti").classList.remove("hidden");setTimeout(()=>document.getElementById("confetti").classList.add("hidden"),3000);}}});
-document.querySelectorAll("[data-dateid]").forEach(el=>{el.onchange=()=>{sd[el.dataset.dateid]=el.value;sv();render();}});}
-document.querySelectorAll(".tab-btn").forEach(btn=>{btn.onclick=()=>{document.querySelectorAll(".tab-btn").forEach(b=>b.classList.remove("active"));btn.classList.add("active");ct=btn.dataset.tab;render();}});
-document.getElementById("confetti").onclick=()=>{document.getElementById("confetti").classList.add("hidden");};
+// ─── Data ────────────────────────────────────────────────
+const SUPPLEMENTS = [
+  { id:"d3k2", name:"Vitamin D3+K2", brand:"Sports Research", dose:"5000IU D3 + 100mcg K2 MK-7", perDay:1, unit:"顆", perBottle:60, timeSlot:"morning", emoji:"☀️", color:"#fbbf24", benefit:"骨骼健康、免疫調節、端粒保護", note:"" },
+  { id:"k2extra", name:"K2 額外補充", brand:"單獨 K2 MK-7", dose:"100mcg MK-7", perDay:1, unit:"顆", perBottle:120, timeSlot:"morning", emoji:"🦴", color:"#a3e635", benefit:"引導鈣沉積到骨骼、保護血管彈性", note:"搭配 D3 總計 200mcg K2" },
+  { id:"omega3", name:"Omega-3 魚油", brand:"Sports Research Triple Strength", dose:"每次 2 顆", perDay:2, unit:"顆", perBottle:120, timeSlot:"morning", emoji:"🐟", color:"#38bdf8", benefit:"心血管保護、抗發炎", note:"注意 EPA+DHA 實際含量" },
+  { id:"theanine", name:"L-Theanine", brand:"NOW Foods 200mg", dose:"200mg", perDay:1, unit:"顆", perBottle:120, timeSlot:"morning", emoji:"🧠", color:"#c084fc", benefit:"增加 Alpha 腦波、搭配咖啡 = 心流組合", note:"搭配咖啡效果最佳" },
+  { id:"creatine", name:"肌酸 Creatine", brand:"Monohydrate 粉末", dose:"5g", perDay:5, unit:"g", perBottle:500, timeSlot:"anytime", emoji:"💪", color:"#f87171", benefit:"肌力、爆發力、認知功能", note:"⚠️ 需監測腎功能（因服用貝樂克）" },
+  { id:"magnesium", name:"鎂 Magnesium Glycinate", brand:"Doctor's Best", dose:"400mg 元素鎂（4顆）", perDay:4, unit:"顆", perBottle:240, timeSlot:"bedtime", emoji:"🌙", color:"#818cf8", benefit:"助眠放鬆、肌肉恢復、300+酵反應", note:"甘胺酸鎂不易腹瀉" },
+  { id:"glycine", name:"甘胺酸 Glycine", brand:"粉末", dose:"3g", perDay:3, unit:"g", perBottle:454, timeSlot:"bedtime", emoji:"✨", color:"#67e8f9", benefit:"GlyNAC 抗老組合、膠原蛋白合成、助眠", note:"微甜，可直接含著吃或加水" },
+  { id:"nac", name:"NAC", brand:"NOW Foods 600mg", dose:"1200mg（2顆）", perDay:2, unit:"顆", perBottle:250, timeSlot:"bedtime", emoji:"🛡️", color:"#4ade80", benefit:"穀胱甘肽前驅物、肝臟保護、GlyNAC 組合", note:"空腹吸收較好，對 B 肝帶原者可能有益" },
+  { id:"taurine", name:"牛磺酸 Taurine", brand:"粉末", dose:"2g", perDay:2, unit:"g", perBottle:500, timeSlot:"bedtime", emoji:"⚡", color:"#fb923c", benefit:"2023 Science 期刊：延長小鼠壽命 10-12%", note:"安全性極高，可與其他粉末混合" },
+];
+
+const TIME_SLOTS = {
+  morning: { label:"早餐 ~07:30", icon:"🌅", color:"#fbbf24", notifyTime:"07:30" },
+  anytime: { label:"任何時間", icon:"⏰", color:"#60a5fa", notifyTime:null },
+  bedtime: { label:"睡前 ~00:00", icon:"🌙", color:"#a78bfa", notifyTime:"23:45" },
+};
+
+// ─── State ───────────────────────────────────────────────
+const getToday = () => new Date().toISOString().split("T")[0];
+let currentTab = "today";
+let checkedItems = {};
+let checkedDate = getToday();
+let startDates = {};
+SUPPLEMENTS.forEach(s => startDates[s.id] = getToday());
+
+// Try load from localStorage
+try {
+  const saved = JSON.parse(localStorage.getItem("supTracker"));
+  if (saved) {
+    if (saved.checkedDate === getToday()) checkedItems = saved.checkedItems || {};
+    startDates = { ...startDates, ...saved.startDates };
+  }
+} catch(e) {}
+
+function saveState() {
+  try {
+    localStorage.setItem("supTracker", JSON.stringify({ checkedItems, checkedDate, startDates }));
+  } catch(e) {}
+}
+
+// ─── Notifications ───────────────────────────────────────
+if ("Notification" in window && Notification.permission === "default") {
+  Notification.requestPermission();
+}
+
+setInterval(() => {
+  const now = new Date();
+  const hm = String(now.getHours()).padStart(2,"0") + ":" + String(now.getMinutes()).padStart(2,"0");
+  if (hm === "07:30") {
+    const n = SUPPLEMENTS.filter(s => s.timeSlot === "morning" && !checkedItems[s.id]).length;
+    if (n > 0 && Notification.permission === "granted") new Notification("🌅 早餐維他命提醒", { body: `還有 ${n} 項早餐補充品未服用` });
+  }
+  if (hm === "23:45") {
+    const n = SUPPLEMENTS.filter(s => s.timeSlot === "bedtime" && !checkedItems[s.id]).length;
+    if (n > 0 && Notification.permission === "granted") new Notification("🌙 睡前維他命提醒", { body: `還有 ${n} 項睡前補充品未服用` });
+  }
+}, 60000);
+
+// Daily reset
+setInterval(() => {
+  if (checkedDate !== getToday()) { checkedItems = {}; checkedDate = getToday(); saveState(); render(); }
+}, 30000);
+
+// ─── Helpers ─────────────────────────────────────────────
+function getDaysLeft(id) {
+  const s = SUPPLEMENTS.find(x => x.id === id);
+  const start = new Date(startDates[id]);
+  const now = new Date(getToday());
+  const passed = Math.floor((now - start) / 86400000);
+  const total = Math.floor(s.perBottle / s.perDay);
+  return Math.max(0, total - passed);
+}
+function getEndDate(id) {
+  const s = SUPPLEMENTS.find(x => x.id === id);
+  const start = new Date(startDates[id]);
+  const total = Math.floor(s.perBottle / s.perDay);
+  const end = new Date(start); end.setDate(end.getDate() + total);
+  return end.toISOString().split("T")[0];
+}
+function getCompletionRate() {
+  return Math.round(Object.values(checkedItems).filter(Boolean).length / SUPPLEMENTS.length * 100);
+}
+
+// ─── Render ──────────────────────────────────────────────
+function render() {
+  document.getElementById("today-date").textContent = getToday();
+  const content = document.getElementById("content");
+
+  if (currentTab === "today") content.innerHTML = renderToday();
+  else if (currentTab === "supply") content.innerHTML = renderSupply();
+  else content.innerHTML = renderStack();
+
+  bindEvents();
+}
+
+function renderToday() {
+  const rate = getCompletionRate();
+  const done = Object.values(checkedItems).filter(Boolean).length;
+  let html = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+      <span style="font-size:13px;color:#94a3b8">今日進度</span>
+      <span style="font-size:13px;font-weight:600;color:${rate===100?'#34d399':'#a78bfa'}">${rate}%</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill ${rate===100?'progress-green':'progress-purple'}" style="width:${rate}%"></div></div>
+    <div style="font-size:11px;color:#475569;margin-bottom:8px;text-align:center">${done} / ${SUPPLEMENTS.length} 已服用</div>`;
+
+  for (const [slot, info] of Object.entries(TIME_SLOTS)) {
+    const items = SUPPLEMENTS.filter(s => s.timeSlot === slot);
+    html += `<div class="section-title" style="color:${info.color}"><span>${info.icon}</span> ${info.label}${info.notifyTime ? `<span class="notify-hint">（${info.notifyTime} 提醒）</span>` : ''}</div>`;
+    for (const sup of items) {
+      const checked = checkedItems[sup.id];
+      html += `
+        <div class="check-card ${checked?'checked':''}" data-check="${sup.id}"
+             style="--accent:${sup.color};--accent-15:${sup.color}15;--accent-30:${sup.color}30;--accent-40:${sup.color}40">
+          <div class="checkbox">${checked?'✓':''}</div>
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
+              <span class="sup-emoji">${sup.emoji}</span>
+              <span class="sup-name" style="color:${checked?sup.color:'#e2e8f0'}">${sup.name}</span>
+            </div>
+            <div class="sup-dose">${sup.dose}</div>
+          </div>
+        </div>`;
+    }
+  }
+  return html;
+}
+
+function renderSupply() {
+  const sorted = [...SUPPLEMENTS].sort((a,b) => getDaysLeft(a.id) - getDaysLeft(b.id));
+  let html = `<div style="font-size:13px;color:#94a3b8;margin-bottom:12px">依剩餘天數排序，越少越前面</div>`;
+
+  for (const sup of sorted) {
+    const dl = getDaysLeft(sup.id);
+    const endDate = getEndDate(sup.id);
+    const totalDays = Math.floor(sup.perBottle / sup.perDay);
+    const pct = Math.min(100, Math.round(((totalDays - dl) / totalDays) * 100));
+    const cls = dl <= 7 ? 'danger' : dl <= 14 ? 'warn' : '';
+    const badgeCls = dl <= 7 ? 'danger' : dl <= 14 ? 'warn' : 'ok';
+    const barColor = dl <= 7 ? 'linear-gradient(90deg,#ef4444,#f87171)' : dl <= 14 ? 'linear-gradient(90deg,#f59e0b,#fbbf24)' : 'linear-gradient(90deg,#6366f1,#a78bfa)';
+
+    html += `
+      <div class="supply-card ${cls}">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:18px">${sup.emoji}</span>
+            <span style="font-weight:600;font-size:14px">${sup.name}</span>
+          </div>
+          <span class="badge ${badgeCls}">${dl===0?'已用完':`剩 ${dl} 天`}</span>
+        </div>
+        <div class="progress-bar" style="margin-bottom:8px"><div class="progress-fill" style="width:${pct}%;background:${barColor}"></div></div>
+        <div class="supply-meta">
+          <span>每日 ${sup.perDay}${sup.unit} / 每瓶 ${sup.perBottle}${sup.unit}</span>
+          <span>預計 ${endDate} 用完</span>
+        </div>
+        <div style="margin-top:8px;display:flex;align-items:center;gap:8px">
+          <span style="font-size:11px;color:#64748b">開始日期：</span>
+          <input type="date" class="date-input" data-dateid="${sup.id}" value="${startDates[sup.id]}">
+        </div>
+      </div>`;
+  }
+  return html;
+}
+
+function renderStack() {
+  let html = `
+    <div class="warning-box">
+      ⚠️ <strong>B 肝帶原注意事項</strong><br>
+      • 肌酸需定期監測腎功能（eGFR、肌酐），因貝樂克經腎臟排泄<br>
+      • 已排除 Ashwagandha（有肝毒性報告，慢性肝病禁用）<br>
+      • NAC 對 B 肝帶原者可能有益（支持肝臟穀胱甘肽）<br>
+      • 下次回診請將此清單給肝膽科醫生確認
+    </div>`;
+
+  for (const [slot, info] of Object.entries(TIME_SLOTS)) {
+    const items = SUPPLEMENTS.filter(s => s.timeSlot === slot);
+    html += `<div class="section-title" style="color:${info.color}"><span>${info.icon}</span> ${info.label}</div>`;
+    for (const sup of items) {
+      const isWarn = sup.note.startsWith("⚠️");
+      html += `
+        <div class="info-card" style="border:1px solid ${sup.color}20">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+            <span style="font-size:22px">${sup.emoji}</span>
+            <div>
+              <div style="font-weight:700;font-size:15px;color:${sup.color}">${sup.name}</div>
+              <div style="font-size:11px;color:#64748b">${sup.brand}</div>
+            </div>
+          </div>
+          <div style="margin-bottom:8px">
+            <span class="tag" style="background:${sup.color}15;color:${sup.color}">${sup.dose}</span>
+            <span class="tag" style="background:rgba(255,255,255,0.05);color:#94a3b8">每日 ${sup.perDay}${sup.unit}</span>
+          </div>
+          <div style="font-size:13px;color:#94a3b8;line-height:1.5;margin-bottom:4px">${sup.benefit}</div>
+          ${sup.note ? `<div style="font-size:12px;color:${isWarn?'#fbbf24':'#64748b'};font-style:italic;margin-top:4px">${sup.note}</div>` : ''}
+        </div>`;
+    }
+  }
+
+  html += `<div class="cost-footer">預估月費約 US$43（≈NT$1,400）<br>基於 iHerb 價格估算</div>`;
+  return html;
+}
+
+// ─── Events ──────────────────────────────────────────────
+function bindEvents() {
+  document.querySelectorAll("[data-check]").forEach(el => {
+    el.onclick = () => {
+      const id = el.dataset.check;
+      checkedItems[id] = !checkedItems[id];
+      saveState();
+      render();
+      if (getCompletionRate() === 100) {
+        document.getElementById("confetti").classList.remove("hidden");
+        setTimeout(() => document.getElementById("confetti").classList.add("hidden"), 3000);
+      }
+    };
+  });
+  document.querySelectorAll("[data-dateid]").forEach(el => {
+    el.onchange = () => {
+      startDates[el.dataset.dateid] = el.value;
+      saveState();
+      render();
+    };
+  });
+}
+
+// Tab switching
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentTab = btn.dataset.tab;
+    render();
+  };
+});
+
+document.getElementById("confetti").onclick = () => {
+  document.getElementById("confetti").classList.add("hidden");
+};
+
+// ─── Init ────────────────────────────────────────────────
 render();
-</script></body></html>
+</script>
+</body>
+</html>
