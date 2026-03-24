@@ -147,15 +147,15 @@ input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.7); }
 <script>
 // ─── Data ────────────────────────────────────────────────
 const SUPPLEMENTS = [
-  { id:"d3k2", name:"Vitamin D3+K2", brand:"Sports Research", dose:"5000IU D3 + 100mcg K2 MK-7", perDay:1, unit:"顆", perBottle:60, timeSlot:"morning", emoji:"☀️", color:"#fbbf24", benefit:"骨骼健康、免疫調節、端粒保護", note:"" },
-  { id:"k2extra", name:"K2 額外補充", brand:"單獨 K2 MK-7", dose:"100mcg MK-7", perDay:1, unit:"顆", perBottle:120, timeSlot:"morning", emoji:"🦴", color:"#a3e635", benefit:"引導鈣沉積到骨骼、保護血管彈性", note:"搭配 D3 總計 200mcg K2" },
-  { id:"omega3", name:"Omega-3 魚油", brand:"Sports Research Triple Strength", dose:"每次 2 顆", perDay:2, unit:"顆", perBottle:120, timeSlot:"morning", emoji:"🐟", color:"#38bdf8", benefit:"心血管保護、抗發炎", note:"注意 EPA+DHA 實際含量" },
-  { id:"theanine", name:"L-Theanine", brand:"NOW Foods 200mg", dose:"200mg", perDay:1, unit:"顆", perBottle:120, timeSlot:"morning", emoji:"🧠", color:"#c084fc", benefit:"增加 Alpha 腦波、搭配咖啡 = 心流組合", note:"搭配咖啡效果最佳" },
-  { id:"creatine", name:"肌酸 Creatine", brand:"Monohydrate 粉末", dose:"5g", perDay:5, unit:"g", perBottle:500, timeSlot:"anytime", emoji:"💪", color:"#f87171", benefit:"肌力、爆發力、認知功能", note:"⚠️ 需監測腎功能（因服用貝樂克）" },
-  { id:"magnesium", name:"鎂 Magnesium Glycinate", brand:"Doctor's Best", dose:"400mg 元素鎂（4顆）", perDay:4, unit:"顆", perBottle:240, timeSlot:"bedtime", emoji:"🌙", color:"#818cf8", benefit:"助眠放鬆、肌肉恢復、300+酵反應", note:"甘胺酸鎂不易腹瀉" },
-  { id:"glycine", name:"甘胺酸 Glycine", brand:"粉末", dose:"3g", perDay:3, unit:"g", perBottle:454, timeSlot:"bedtime", emoji:"✨", color:"#67e8f9", benefit:"GlyNAC 抗老組合、膠原蛋白合成、助眠", note:"微甜，可直接含著吃或加水" },
-  { id:"nac", name:"NAC", brand:"NOW Foods 600mg", dose:"1200mg（2顆）", perDay:2, unit:"顆", perBottle:250, timeSlot:"bedtime", emoji:"🛡️", color:"#4ade80", benefit:"穀胱甘肽前驅物、肝臟保護、GlyNAC 組合", note:"空腹吸收較好，對 B 肝帶原者可能有益" },
-  { id:"taurine", name:"牛磺酸 Taurine", brand:"粉末", dose:"2g", perDay:2, unit:"g", perBottle:500, timeSlot:"bedtime", emoji:"⚡", color:"#fb923c", benefit:"2023 Science 期刊：延長小鼠壽命 10-12%", note:"安全性極高，可與其他粉末混合" },
+  { id:"d3k2", name:"Vitamin D3+K2", brand:"Sports Research", dose:"5000IU D3 + 100mcg K2 MK-7", perDay:1, unit:"顆", perBottle:60, timeSlot:"morning", emoji:"☀️", color:"#fbbf24", benefit:"骨骼健康、免疫調節、端粒保護", note:"", pb:"長期投資：減緩端粒縮短（細胞老化指標）、強化免疫力，改善你常快感冒的問題" },
+  { id:"k2extra", name:"K2 額外補充", brand:"NOW Foods MK-7", dose:"100mcg MK-7", perDay:1, unit:"顆", perBottle:120, timeSlot:"morning", emoji:"🦴", color:"#a3e635", benefit:"引導鈣沉積到骨骼、保護血管彈性", note:"搭配 D3 總計 200mcg K2", pb:"確保 D3 幫你吸收的鈣去到骨骼，而不是堆積在血管壁" },
+  { id:"omega3", name:"Omega-3 魚油", brand:"California Gold Nutrition", dose:"每次 2 顆", perDay:2, unit:"顆", perBottle:240, timeSlot:"morning", emoji:"🐟", color:"#38bdf8", benefit:"心血管保護、抗發炎", note:"EPA 穩定情緒、DHA 是大腦結構關鍵", pb:"EPA 抗發炎穩定情緒（降低焦慮煩躁）、DHA 支持記憶力和認知功能" },
+  { id:"theanine", name:"L-Theanine", brand:"NOW Foods 200mg", dose:"200mg", perDay:1, unit:"顆", perBottle:120, timeSlot:"morning", emoji:"🧠", color:"#c084fc", benefit:"增加 Alpha 腦波、搭配咖啡 = 心流組合", note:"搭配咖啡效果最佳", pb:"直接增加 alpha 腦波，改善專注力和注意力不集中，搭咖啡進入心流狀態；也是冥想/顯化的入門輔助" },
+  { id:"creatine", name:"肌酸 Creatine", brand:"Monohydrate 粉末", dose:"5g", perDay:5, unit:"g", perBottle:500, timeSlot:"anytime", emoji:"💪", color:"#f87171", benefit:"肌力、爆發力、認知功能", note:"⚠️ 需監測腎功能（因服用貝樂克）", pb:"除了肌肉，研究顯示對記憶力和認知處理速度也有幫助，尤其在睡眠不足時效果更明顯" },
+  { id:"magnesium", name:"鎂 Magnesium Glycinate", brand:"Doctor's Best", dose:"400mg 元素鎂（4顆）", perDay:4, unit:"顆", perBottle:240, timeSlot:"bedtime", emoji:"🌙", color:"#818cf8", benefit:"助眠放鬆、肌肉恢復、300+酶反應", note:"甘胺酸鎂不易腹瀉", pb:"核心：減少夢多和起床疲勞感、降低焦慮煩躁和沒耐心、改善注意力不集中（缺鎂直接影響神經傳導）" },
+  { id:"glycine", name:"甘胺酸 Glycine", brand:"NOW Foods 粉末", dose:"3g", perDay:3, unit:"g", perBottle:454, timeSlot:"bedtime", emoji:"✨", color:"#67e8f9", benefit:"GlyNAC 抗老組合、膠原蛋白合成、助眠", note:"微甜，可直接含著吃或加水", pb:"降低核心體溫幫助進入深層睡眠，減少夢多、隔天起來更清醒；也是 GlyNAC 抗老組合的一半" },
+  { id:"nac", name:"NAC", brand:"NOW Foods 600mg", dose:"1200mg（2顆）", perDay:2, unit:"顆", perBottle:250, timeSlot:"bedtime", emoji:"🛡️", color:"#4ade80", benefit:"穀胱甘肽前驅物、肝臟保護、GlyNAC 組合", note:"空腹吸收較好，對 B 肝帶原者可能有益", pb:"跟甘胺酸組成 GlyNAC：穀胱甘肽是大腦主要抗氧化劑，保護認知功能；也支持肝臟解毒（對 B 肝帶原有益）" },
+  { id:"taurine", name:"牛磺酸 Taurine", brand:"NOW Foods 粉末", dose:"2g", perDay:2, unit:"g", perBottle:227, timeSlot:"bedtime", emoji:"⚡", color:"#fb923c", benefit:"2023 Science 期刊：延長小鼠壽命 10-12%", note:"安全性極高，可與其他粉末混合", pb:"Science 期刊重磅研究背書的抗老成分，改善骨密度、肌力和免疫功能" },
 ];
 
 const TIME_SLOTS = {
@@ -170,7 +170,9 @@ let currentTab = "today";
 let checkedItems = {};
 let checkedDate = getToday();
 let startDates = {};
-SUPPLEMENTS.forEach(s => startDates[s.id] = getToday());
+let arrivedStatus = {};
+SUPPLEMENTS.forEach(s => { startDates[s.id] = ""; arrivedStatus[s.id] = false; });
+arrivedStatus["creatine"] = true; startDates["creatine"] = getToday();
 
 // Try load from localStorage
 try {
@@ -178,12 +180,13 @@ try {
   if (saved) {
     if (saved.checkedDate === getToday()) checkedItems = saved.checkedItems || {};
     startDates = { ...startDates, ...saved.startDates };
+    if (saved.arrivedStatus) arrivedStatus = { ...arrivedStatus, ...saved.arrivedStatus };
   }
 } catch(e) {}
 
 function saveState() {
   try {
-    localStorage.setItem("supTracker", JSON.stringify({ checkedItems, checkedDate, startDates }));
+    localStorage.setItem("supTracker", JSON.stringify({ checkedItems, checkedDate, startDates, arrivedStatus }));
   } catch(e) {}
 }
 
@@ -212,6 +215,7 @@ setInterval(() => {
 
 // ─── Helpers ─────────────────────────────────────────────
 function getDaysLeft(id) {
+  if (!arrivedStatus[id] || !startDates[id]) return -1;
   const s = SUPPLEMENTS.find(x => x.id === id);
   const start = new Date(startDates[id]);
   const now = new Date(getToday());
@@ -220,6 +224,7 @@ function getDaysLeft(id) {
   return Math.max(0, total - passed);
 }
 function getEndDate(id) {
+  if (!arrivedStatus[id] || !startDates[id]) return "—";
   const s = SUPPLEMENTS.find(x => x.id === id);
   const start = new Date(startDates[id]);
   const total = Math.floor(s.perBottle / s.perDay);
@@ -276,38 +281,62 @@ function renderToday() {
 }
 
 function renderSupply() {
-  const sorted = [...SUPPLEMENTS].sort((a,b) => getDaysLeft(a.id) - getDaysLeft(b.id));
-  let html = `<div style="font-size:13px;color:#94a3b8;margin-bottom:12px">依剩餘天數排序，越少越前面</div>`;
+  const arrived = SUPPLEMENTS.filter(s => arrivedStatus[s.id]).sort((a,b) => getDaysLeft(a.id) - getDaysLeft(b.id));
+  const notArrived = SUPPLEMENTS.filter(s => !arrivedStatus[s.id]);
 
-  for (const sup of sorted) {
-    const dl = getDaysLeft(sup.id);
-    const endDate = getEndDate(sup.id);
-    const totalDays = Math.floor(sup.perBottle / sup.perDay);
-    const pct = Math.min(100, Math.round(((totalDays - dl) / totalDays) * 100));
-    const cls = dl <= 7 ? 'danger' : dl <= 14 ? 'warn' : '';
-    const badgeCls = dl <= 7 ? 'danger' : dl <= 14 ? 'warn' : 'ok';
-    const barColor = dl <= 7 ? 'linear-gradient(90deg,#ef4444,#f87171)' : dl <= 14 ? 'linear-gradient(90deg,#f59e0b,#fbbf24)' : 'linear-gradient(90deg,#6366f1,#a78bfa)';
+  let html = '';
 
-    html += `
-      <div class="supply-card ${cls}">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-          <div style="display:flex;align-items:center;gap:8px">
-            <span style="font-size:18px">${sup.emoji}</span>
-            <span style="font-weight:600;font-size:14px">${sup.name}</span>
+  if (arrived.length > 0) {
+    html += `<div style="font-size:13px;color:#94a3b8;margin-bottom:12px">已到貨 · 依剩餘天數排序</div>`;
+    for (const sup of arrived) {
+      const dl = getDaysLeft(sup.id);
+      const endDate = getEndDate(sup.id);
+      const totalDays = Math.floor(sup.perBottle / sup.perDay);
+      const pct = Math.min(100, Math.round(((totalDays - dl) / totalDays) * 100));
+      const cls = dl <= 7 ? 'danger' : dl <= 14 ? 'warn' : '';
+      const badgeCls = dl <= 7 ? 'danger' : dl <= 14 ? 'warn' : 'ok';
+      const barColor = dl <= 7 ? 'linear-gradient(90deg,#ef4444,#f87171)' : dl <= 14 ? 'linear-gradient(90deg,#f59e0b,#fbbf24)' : 'linear-gradient(90deg,#6366f1,#a78bfa)';
+
+      html += `
+        <div class="supply-card ${cls}">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="font-size:18px">${sup.emoji}</span>
+              <span style="font-weight:600;font-size:14px">${sup.name}</span>
+            </div>
+            <span class="badge ${badgeCls}">${dl===0?'已用完':`剩 ${dl} 天`}</span>
           </div>
-          <span class="badge ${badgeCls}">${dl===0?'已用完':`剩 ${dl} 天`}</span>
-        </div>
-        <div class="progress-bar" style="margin-bottom:8px"><div class="progress-fill" style="width:${pct}%;background:${barColor}"></div></div>
-        <div class="supply-meta">
-          <span>每日 ${sup.perDay}${sup.unit} / 每瓶 ${sup.perBottle}${sup.unit}</span>
-          <span>預計 ${endDate} 用完</span>
-        </div>
-        <div style="margin-top:8px;display:flex;align-items:center;gap:8px">
-          <span style="font-size:11px;color:#64748b">開始日期：</span>
-          <input type="date" class="date-input" data-dateid="${sup.id}" value="${startDates[sup.id]}">
-        </div>
-      </div>`;
+          <div class="progress-bar" style="margin-bottom:8px"><div class="progress-fill" style="width:${pct}%;background:${barColor}"></div></div>
+          <div class="supply-meta">
+            <span>每日 ${sup.perDay}${sup.unit} / 每瓶 ${sup.perBottle}${sup.unit}</span>
+            <span>預計 ${endDate} 用完</span>
+          </div>
+          <div style="margin-top:8px;display:flex;align-items:center;gap:8px">
+            <span style="font-size:11px;color:#64748b">開始日期：</span>
+            <input type="date" class="date-input" data-dateid="${sup.id}" value="${startDates[sup.id]}">
+          </div>
+        </div>`;
+    }
   }
+
+  if (notArrived.length > 0) {
+    html += `<div style="font-size:13px;color:#94a3b8;margin:16px 0 12px">📦 尚未到貨</div>`;
+    for (const sup of notArrived) {
+      html += `
+        <div class="supply-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="font-size:18px">${sup.emoji}</span>
+              <span style="font-weight:600;font-size:14px">${sup.name}</span>
+            </div>
+            <span class="badge" style="background:rgba(100,116,139,0.15);color:#64748b">未到貨</span>
+          </div>
+          <div style="font-size:11px;color:#64748b;margin-bottom:10px">每日 ${sup.perDay}${sup.unit} / 每瓶 ${sup.perBottle}${sup.unit}</div>
+          <button data-arrive="${sup.id}" style="width:100%;padding:8px;background:rgba(167,139,250,0.15);border:1px solid rgba(167,139,250,0.3);border-radius:8px;color:#a78bfa;font-size:13px;font-weight:600;cursor:pointer">📦 已到貨，開始使用</button>
+        </div>`;
+    }
+  }
+
   return html;
 }
 
@@ -341,11 +370,12 @@ function renderStack() {
           </div>
           <div style="font-size:13px;color:#94a3b8;line-height:1.5;margin-bottom:4px">${sup.benefit}</div>
           ${sup.note ? `<div style="font-size:12px;color:${isWarn?'#fbbf24':'#64748b'};font-style:italic;margin-top:4px">${sup.note}</div>` : ''}
+          ${sup.pb ? `<div style="font-size:11px;color:#a78bfa;line-height:1.4;margin-top:6px;padding:6px 8px;background:rgba(167,139,250,0.08);border-radius:6px">💡 對你的幫助：${sup.pb}</div>` : ''}
         </div>`;
     }
   }
 
-  html += `<div class="cost-footer">預估月費約 US$43（≈NT$1,400）<br>基於 iHerb 價格估算</div>`;
+  html += `<div class="cost-footer">預估月費約 NT$2,100（含全部 9 種）基於 iHerb 2026/3 價格</div>`;
   return html;
 }
 
@@ -366,6 +396,15 @@ function bindEvents() {
   document.querySelectorAll("[data-dateid]").forEach(el => {
     el.onchange = () => {
       startDates[el.dataset.dateid] = el.value;
+      saveState();
+      render();
+    };
+  });
+  document.querySelectorAll("[data-arrive]").forEach(el => {
+    el.onclick = () => {
+      const id = el.dataset.arrive;
+      arrivedStatus[id] = true;
+      startDates[id] = getToday();
       saveState();
       render();
     };
