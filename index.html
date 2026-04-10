@@ -36,8 +36,8 @@ body {
   padding-bottom: env(safe-area-inset-bottom);
 }
 .tab-btn {
-  flex: 1; padding: 12px 0 10px; background: none; border: none;
-  color: #64748b; font-size: 11px; cursor: pointer;
+  flex: 1; padding: 10px 0 8px; background: none; border: none;
+  color: #64748b; font-size: 10px; cursor: pointer;
   display: flex; flex-direction: column; align-items: center; gap: 2px;
   border-top: 2px solid transparent; transition: all 0.2s;
 }
@@ -119,6 +119,67 @@ input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.7); }
 }
 .confetti-content { text-align: center; font-size: 48px; animation: bounce 0.5s ease; }
 
+/* Modal */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 100;
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: 40px 16px; overflow-y: auto;
+}
+.modal-box {
+  width: 100%; max-width: 440px; background: #1e1b4b;
+  border-radius: 16px; padding: 20px; border: 1px solid rgba(255,255,255,0.08);
+}
+.fg { margin-bottom: 12px; }
+.fl { display: block; font-size: 12px; color: #94a3b8; margin-bottom: 4px; }
+.fi {
+  width: 100%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px; padding: 8px 10px; color: #e2e8f0; font-size: 14px; outline: none;
+  font-family: inherit; resize: vertical;
+}
+.fi:focus { border-color: #6366f1; }
+.color-dot {
+  width: 28px; height: 28px; border-radius: 50%; cursor: pointer;
+  border: 2px solid transparent; transition: border-color 0.15s;
+}
+.color-dot.sel { border-color: #fff; }
+
+/* Calendar */
+.cal-nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.cal-nav button { background: none; border: none; color: #a78bfa; font-size: 18px; cursor: pointer; padding: 4px 8px; }
+.cal-nav span { font-size: 15px; font-weight: 600; color: #e2e8f0; }
+.cal-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 11px; color: #64748b; margin-bottom: 4px; }
+.cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+.cal-cell {
+  aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  border-radius: 10px; cursor: pointer; font-size: 13px; color: #94a3b8; gap: 2px; transition: background 0.15s;
+}
+.cal-cell:hover { background: rgba(255,255,255,0.04); }
+.cal-cell.today { outline: 2px solid #a78bfa; outline-offset: -2px; }
+.cal-cell.selected { background: rgba(99,102,241,0.25); color: #e2e8f0; font-weight: 600; }
+.cal-cell.empty { cursor: default; }
+.cal-dot { width: 6px; height: 6px; border-radius: 50%; }
+.day-detail { margin-top: 16px; }
+.day-detail-item {
+  display: flex; align-items: center; gap: 10px; padding: 8px 12px;
+  background: rgba(255,255,255,0.03); border-radius: 10px; margin-bottom: 4px; font-size: 13px;
+}
+
+/* Stats */
+.stats-toggle { display: flex; gap: 6px; margin-bottom: 16px; }
+.stats-toggle button {
+  flex: 1; padding: 8px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03); color: #94a3b8; font-size: 13px; cursor: pointer; font-weight: 500;
+}
+.stats-toggle button.active { background: rgba(99,102,241,0.2); border-color: #6366f1; color: #a78bfa; font-weight: 600; }
+.chart-box { background: rgba(255,255,255,0.03); border-radius: 14px; padding: 14px; margin-bottom: 16px; }
+.chart-title { font-size: 13px; font-weight: 600; color: #94a3b8; margin-bottom: 10px; }
+.stat-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.stat-card {
+  background: rgba(255,255,255,0.04); border-radius: 12px; padding: 12px; text-align: center;
+}
+.stat-card .sv { font-size: 24px; font-weight: 700; color: #a78bfa; }
+.stat-card .sl { font-size: 11px; color: #64748b; margin-top: 4px; }
+
 .hidden { display: none; }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes bounce { 0% { transform: scale(0.5); } 60% { transform: scale(1.1); } 100% { transform: scale(1); } }
@@ -133,6 +194,8 @@ input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.7); }
   <div class="content" id="content"></div>
   <div class="tab-bar">
     <button class="tab-btn active" data-tab="today"><span class="icon">📋</span>今日</button>
+    <button class="tab-btn" data-tab="history"><span class="icon">📅</span>歷史</button>
+    <button class="tab-btn" data-tab="stats"><span class="icon">📊</span>統計</button>
     <button class="tab-btn" data-tab="supply"><span class="icon">📦</span>補貨</button>
     <button class="tab-btn" data-tab="stack"><span class="icon">💊</span>Stack</button>
   </div>
@@ -142,11 +205,42 @@ input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.7); }
       <div style="font-size:18px;margin-top:8px;color:#34d399;font-weight:700">今日全部完成！</div>
     </div>
   </div>
+  <div class="modal-overlay hidden" id="sup-modal">
+    <div class="modal-box">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <h2 id="modal-title" style="font-size:18px;font-weight:700;color:#e2e8f0">新增補充品</h2>
+        <button id="modal-close" style="background:none;border:none;color:#64748b;font-size:22px;cursor:pointer;padding:4px">✕</button>
+      </div>
+      <form id="sup-form" autocomplete="off">
+        <div class="fg"><label class="fl">名稱 *</label><input class="fi" id="sf-name" required></div>
+        <div class="fg"><label class="fl">品牌</label><input class="fi" id="sf-brand"></div>
+        <div class="fg"><label class="fl">劑量（如 1000mg）</label><input class="fi" id="sf-dose"></div>
+        <div style="display:flex;gap:8px">
+          <div class="fg" style="flex:1"><label class="fl">每日用量 *</label><input class="fi" id="sf-perday" type="number" min="1" required></div>
+          <div class="fg" style="flex:1"><label class="fl">單位</label><select class="fi" id="sf-unit"><option value="顆">顆</option><option value="g">g</option><option value="ml">ml</option></select></div>
+        </div>
+        <div class="fg"><label class="fl">每瓶數量 *</label><input class="fi" id="sf-perbottle" type="number" min="1" required></div>
+        <div class="fg"><label class="fl">服用時段</label><select class="fi" id="sf-timeslot"><option value="morning">🌅 早餐</option><option value="anytime">⏰ 任何時間</option><option value="bedtime">🌙 睡前</option></select></div>
+        <div class="fg"><label class="fl">Emoji</label><input class="fi" id="sf-emoji" placeholder="如 🍊" maxlength="4"></div>
+        <div class="fg">
+          <label class="fl">顏色</label>
+          <div id="sf-colors" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px"></div>
+        </div>
+        <div class="fg"><label class="fl">健康益處</label><textarea class="fi" id="sf-benefit" rows="2"></textarea></div>
+        <div class="fg"><label class="fl">備註</label><textarea class="fi" id="sf-note" rows="2"></textarea></div>
+        <div style="display:flex;gap:8px;margin-top:16px">
+          <button type="submit" style="flex:1;padding:12px;background:#6366f1;border:none;border-radius:10px;color:#fff;font-size:14px;font-weight:600;cursor:pointer">儲存</button>
+          <button type="button" id="modal-cancel" style="flex:1;padding:12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:10px;color:#94a3b8;font-size:14px;cursor:pointer">取消</button>
+        </div>
+        <button type="button" id="modal-delete" class="hidden" style="width:100%;padding:10px;margin-top:8px;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);border-radius:10px;color:#ef4444;font-size:13px;font-weight:600;cursor:pointer">🗑 刪除此補充品</button>
+      </form>
+    </div>
+  </div>
 </div>
 
 <script>
 // ─── Data ────────────────────────────────────────────────
-const SUPPLEMENTS = [
+const BUILT_IN_SUPPLEMENTS = [
   { id:"d3k2", name:"Vitamin D3+K2", brand:"Sports Research", dose:"5000IU D3 + 100mcg K2 MK-7", perDay:1, unit:"顆", perBottle:60, timeSlot:"morning", emoji:"☀️", color:"#fbbf24", benefit:"骨骼健康、免疫調節、端粒保護", note:"", pb:"長期投資：減緩端粒縮短（細胞老化指標）、強化免疫力，改善你常快感冒的問題" },
   { id:"k2extra", name:"K2 額外補充", brand:"NOW Foods MK-7", dose:"100mcg MK-7", perDay:1, unit:"顆", perBottle:120, timeSlot:"morning", emoji:"🦴", color:"#a3e635", benefit:"引導鈣沉積到骨骼、保護血管彈性", note:"搭配 D3 總計 200mcg K2", pb:"確保 D3 幫你吸收的鈣去到骨骼，而不是堆積在血管壁" },
   { id:"omega3", name:"Omega-3 魚油", brand:"California Gold Nutrition", dose:"每次 2 顆", perDay:2, unit:"顆", perBottle:240, timeSlot:"morning", emoji:"🐟", color:"#38bdf8", benefit:"心血管保護、抗發炎", note:"EPA 穩定情緒、DHA 是大腦結構關鍵", pb:"EPA 抗發炎穩定情緒（降低焦慮煩躁）、DHA 支持記憶力和認知功能" },
@@ -171,22 +265,46 @@ let checkedItems = {};
 let checkedDate = getToday();
 let startDates = {};
 let arrivedStatus = {};
-SUPPLEMENTS.forEach(s => { startDates[s.id] = ""; arrivedStatus[s.id] = false; });
+let customSupplements = [];
+let history = {};
+let historyViewYear = new Date().getFullYear();
+let historyViewMonth = new Date().getMonth();
+let historySelectedDate = getToday();
+let statsSelectedPeriod = 7;
+
+function getAllSupplements() { return [...BUILT_IN_SUPPLEMENTS, ...customSupplements]; }
+
+BUILT_IN_SUPPLEMENTS.forEach(s => { startDates[s.id] = ""; arrivedStatus[s.id] = false; });
 arrivedStatus["creatine"] = true; startDates["creatine"] = getToday();
 
 // Try load from localStorage
 try {
   const saved = JSON.parse(localStorage.getItem("supTracker"));
   if (saved) {
+    customSupplements = saved.customSupplements || [];
+    history = saved.history || {};
+    // Archive previous day before resetting
+    if (saved.checkedDate && saved.checkedDate !== getToday() && saved.checkedItems && Object.keys(saved.checkedItems).length > 0) {
+      history[saved.checkedDate] = saved.checkedItems;
+    }
     if (saved.checkedDate === getToday()) checkedItems = saved.checkedItems || {};
     startDates = { ...startDates, ...saved.startDates };
     if (saved.arrivedStatus) arrivedStatus = { ...arrivedStatus, ...saved.arrivedStatus };
+    // Init defaults for custom supplements
+    customSupplements.forEach(s => {
+      if (!(s.id in startDates)) startDates[s.id] = "";
+      if (!(s.id in arrivedStatus)) arrivedStatus[s.id] = false;
+    });
+    // Prune history older than 365 days
+    const cutoff = new Date(); cutoff.setDate(cutoff.getDate() - 365);
+    const cutoffStr = cutoff.toISOString().split("T")[0];
+    for (const d of Object.keys(history)) { if (d < cutoffStr) delete history[d]; }
   }
 } catch(e) {}
 
 function saveState() {
   try {
-    localStorage.setItem("supTracker", JSON.stringify({ checkedItems, checkedDate, startDates, arrivedStatus }));
+    localStorage.setItem("supTracker", JSON.stringify({ checkedItems, checkedDate, startDates, arrivedStatus, customSupplements, history }));
   } catch(e) {}
 }
 
@@ -199,24 +317,28 @@ setInterval(() => {
   const now = new Date();
   const hm = String(now.getHours()).padStart(2,"0") + ":" + String(now.getMinutes()).padStart(2,"0");
   if (hm === "07:30") {
-    const n = SUPPLEMENTS.filter(s => s.timeSlot === "morning" && !checkedItems[s.id]).length;
+    const n = getAllSupplements().filter(s => s.timeSlot === "morning" && !checkedItems[s.id]).length;
     if (n > 0 && Notification.permission === "granted") new Notification("🌅 早餐維他命提醒", { body: `還有 ${n} 項早餐補充品未服用` });
   }
   if (hm === "23:45") {
-    const n = SUPPLEMENTS.filter(s => s.timeSlot === "bedtime" && !checkedItems[s.id]).length;
+    const n = getAllSupplements().filter(s => s.timeSlot === "bedtime" && !checkedItems[s.id]).length;
     if (n > 0 && Notification.permission === "granted") new Notification("🌙 睡前維他命提醒", { body: `還有 ${n} 項睡前補充品未服用` });
   }
 }, 60000);
 
-// Daily reset
+// Daily reset (archive before clearing)
 setInterval(() => {
-  if (checkedDate !== getToday()) { checkedItems = {}; checkedDate = getToday(); saveState(); render(); }
+  if (checkedDate !== getToday()) {
+    if (Object.keys(checkedItems).length > 0) history[checkedDate] = { ...checkedItems };
+    checkedItems = {}; checkedDate = getToday(); saveState(); render();
+  }
 }, 30000);
 
 // ─── Helpers ─────────────────────────────────────────────
 function getDaysLeft(id) {
   if (!arrivedStatus[id] || !startDates[id]) return -1;
-  const s = SUPPLEMENTS.find(x => x.id === id);
+  const s = getAllSupplements().find(x => x.id === id);
+  if (!s) return -1;
   const start = new Date(startDates[id]);
   const now = new Date(getToday());
   const passed = Math.floor((now - start) / 86400000);
@@ -225,14 +347,108 @@ function getDaysLeft(id) {
 }
 function getEndDate(id) {
   if (!arrivedStatus[id] || !startDates[id]) return "—";
-  const s = SUPPLEMENTS.find(x => x.id === id);
+  const s = getAllSupplements().find(x => x.id === id);
+  if (!s) return "—";
   const start = new Date(startDates[id]);
   const total = Math.floor(s.perBottle / s.perDay);
   const end = new Date(start); end.setDate(end.getDate() + total);
   return end.toISOString().split("T")[0];
 }
 function getCompletionRate() {
-  return Math.round(Object.values(checkedItems).filter(Boolean).length / SUPPLEMENTS.length * 100);
+  const all = getAllSupplements();
+  return all.length === 0 ? 0 : Math.round(Object.values(checkedItems).filter(Boolean).length / all.length * 100);
+}
+
+// ─── Supplement CRUD ─────────────────────────────────────
+const COLOR_PALETTE = ["#fbbf24","#a3e635","#38bdf8","#c084fc","#f87171","#818cf8","#67e8f9","#4ade80","#fb923c","#f472b6","#a78bfa","#34d399"];
+let editingSupId = null;
+
+function openSupplementModal(editId) {
+  editingSupId = editId || null;
+  const modal = document.getElementById("sup-modal");
+  const title = document.getElementById("modal-title");
+  const del = document.getElementById("modal-delete");
+  const form = document.getElementById("sup-form");
+  form.reset();
+
+  // Render color swatches
+  const colorsEl = document.getElementById("sf-colors");
+  colorsEl.innerHTML = COLOR_PALETTE.map(c => `<div class="color-dot" data-color="${c}" style="background:${c}"></div>`).join("");
+
+  if (editId) {
+    const sup = customSupplements.find(s => s.id === editId);
+    if (!sup) return;
+    title.textContent = "編輯補充品";
+    document.getElementById("sf-name").value = sup.name;
+    document.getElementById("sf-brand").value = sup.brand || "";
+    document.getElementById("sf-dose").value = sup.dose || "";
+    document.getElementById("sf-perday").value = sup.perDay;
+    document.getElementById("sf-unit").value = sup.unit || "顆";
+    document.getElementById("sf-perbottle").value = sup.perBottle;
+    document.getElementById("sf-timeslot").value = sup.timeSlot;
+    document.getElementById("sf-emoji").value = sup.emoji || "";
+    document.getElementById("sf-benefit").value = sup.benefit || "";
+    document.getElementById("sf-note").value = sup.note || "";
+    const dot = colorsEl.querySelector(`[data-color="${sup.color}"]`);
+    if (dot) dot.classList.add("sel");
+    del.classList.remove("hidden");
+  } else {
+    title.textContent = "新增補充品";
+    del.classList.add("hidden");
+    // Default select first color
+    colorsEl.querySelector(".color-dot").classList.add("sel");
+  }
+
+  // Color swatch click
+  colorsEl.querySelectorAll(".color-dot").forEach(d => {
+    d.onclick = () => { colorsEl.querySelectorAll(".color-dot").forEach(x => x.classList.remove("sel")); d.classList.add("sel"); };
+  });
+
+  modal.classList.remove("hidden");
+}
+
+function closeModal() { document.getElementById("sup-modal").classList.add("hidden"); editingSupId = null; }
+
+function saveCustomSupplement() {
+  const name = document.getElementById("sf-name").value.trim();
+  const perDay = parseInt(document.getElementById("sf-perday").value);
+  const perBottle = parseInt(document.getElementById("sf-perbottle").value);
+  if (!name || !perDay || !perBottle) return;
+
+  const selColor = document.querySelector("#sf-colors .color-dot.sel");
+  const data = {
+    id: editingSupId || ("custom_" + Date.now()),
+    name,
+    brand: document.getElementById("sf-brand").value.trim(),
+    dose: document.getElementById("sf-dose").value.trim(),
+    perDay,
+    unit: document.getElementById("sf-unit").value,
+    perBottle,
+    timeSlot: document.getElementById("sf-timeslot").value,
+    emoji: document.getElementById("sf-emoji").value.trim() || "💊",
+    color: selColor ? selColor.dataset.color : "#a78bfa",
+    benefit: document.getElementById("sf-benefit").value.trim(),
+    note: document.getElementById("sf-note").value.trim(),
+    pb: "",
+    isCustom: true,
+  };
+
+  if (editingSupId) {
+    const idx = customSupplements.findIndex(s => s.id === editingSupId);
+    if (idx >= 0) customSupplements[idx] = data;
+  } else {
+    customSupplements.push(data);
+    startDates[data.id] = "";
+    arrivedStatus[data.id] = false;
+  }
+  saveState(); closeModal(); render();
+}
+
+function deleteCustomSupplement(id) {
+  if (!confirm("確定要刪除此補充品嗎？")) return;
+  customSupplements = customSupplements.filter(s => s.id !== id);
+  delete startDates[id]; delete arrivedStatus[id]; delete checkedItems[id];
+  saveState(); closeModal(); render();
 }
 
 // ─── Render ──────────────────────────────────────────────
@@ -241,10 +457,13 @@ function render() {
   const content = document.getElementById("content");
 
   if (currentTab === "today") content.innerHTML = renderToday();
+  else if (currentTab === "history") content.innerHTML = renderHistory();
+  else if (currentTab === "stats") content.innerHTML = renderStats();
   else if (currentTab === "supply") content.innerHTML = renderSupply();
   else content.innerHTML = renderStack();
 
   bindEvents();
+  postRender();
 }
 
 function renderToday() {
@@ -256,10 +475,10 @@ function renderToday() {
       <span style="font-size:13px;font-weight:600;color:${rate===100?'#34d399':'#a78bfa'}">${rate}%</span>
     </div>
     <div class="progress-bar"><div class="progress-fill ${rate===100?'progress-green':'progress-purple'}" style="width:${rate}%"></div></div>
-    <div style="font-size:11px;color:#475569;margin-bottom:8px;text-align:center">${done} / ${SUPPLEMENTS.length} 已服用</div>`;
+    <div style="font-size:11px;color:#475569;margin-bottom:8px;text-align:center">${done} / ${getAllSupplements().length} 已服用</div>`;
 
   for (const [slot, info] of Object.entries(TIME_SLOTS)) {
-    const items = SUPPLEMENTS.filter(s => s.timeSlot === slot);
+    const items = getAllSupplements().filter(s => s.timeSlot === slot);
     html += `<div class="section-title" style="color:${info.color}"><span>${info.icon}</span> ${info.label}${info.notifyTime ? `<span class="notify-hint">（${info.notifyTime} 提醒）</span>` : ''}</div>`;
     for (const sup of items) {
       const checked = checkedItems[sup.id];
@@ -281,8 +500,8 @@ function renderToday() {
 }
 
 function renderSupply() {
-  const arrived = SUPPLEMENTS.filter(s => arrivedStatus[s.id]).sort((a,b) => getDaysLeft(a.id) - getDaysLeft(b.id));
-  const notArrived = SUPPLEMENTS.filter(s => !arrivedStatus[s.id]);
+  const arrived = getAllSupplements().filter(s => arrivedStatus[s.id]).sort((a,b) => getDaysLeft(a.id) - getDaysLeft(b.id));
+  const notArrived = getAllSupplements().filter(s => !arrivedStatus[s.id]);
 
   let html = '';
 
@@ -351,63 +570,341 @@ function renderStack() {
     </div>`;
 
   for (const [slot, info] of Object.entries(TIME_SLOTS)) {
-    const items = SUPPLEMENTS.filter(s => s.timeSlot === slot);
+    const items = getAllSupplements().filter(s => s.timeSlot === slot);
     html += `<div class="section-title" style="color:${info.color}"><span>${info.icon}</span> ${info.label}</div>`;
     for (const sup of items) {
-      const isWarn = sup.note.startsWith("⚠️");
+      const isWarn = sup.note && sup.note.startsWith("⚠️");
       html += `
         <div class="info-card" style="border:1px solid ${sup.color}20">
           <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
             <span style="font-size:22px">${sup.emoji}</span>
-            <div>
+            <div style="flex:1">
               <div style="font-weight:700;font-size:15px;color:${sup.color}">${sup.name}</div>
               <div style="font-size:11px;color:#64748b">${sup.brand}</div>
             </div>
+            ${sup.isCustom ? `<button data-edit-sup="${sup.id}" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:4px 10px;color:#94a3b8;font-size:14px;cursor:pointer" title="編輯">✏️</button>` : ''}
           </div>
           <div style="margin-bottom:8px">
-            <span class="tag" style="background:${sup.color}15;color:${sup.color}">${sup.dose}</span>
+            ${sup.dose ? `<span class="tag" style="background:${sup.color}15;color:${sup.color}">${sup.dose}</span>` : ''}
             <span class="tag" style="background:rgba(255,255,255,0.05);color:#94a3b8">每日 ${sup.perDay}${sup.unit}</span>
           </div>
-          <div style="font-size:13px;color:#94a3b8;line-height:1.5;margin-bottom:4px">${sup.benefit}</div>
+          ${sup.benefit ? `<div style="font-size:13px;color:#94a3b8;line-height:1.5;margin-bottom:4px">${sup.benefit}</div>` : ''}
           ${sup.note ? `<div style="font-size:12px;color:${isWarn?'#fbbf24':'#64748b'};font-style:italic;margin-top:4px">${sup.note}</div>` : ''}
           ${sup.pb ? `<div style="font-size:11px;color:#a78bfa;line-height:1.4;margin-top:6px;padding:6px 8px;background:rgba(167,139,250,0.08);border-radius:6px">💡 對你的幫助：${sup.pb}</div>` : ''}
         </div>`;
     }
   }
 
-  html += `<div class="cost-footer">預估月費約 NT$2,100（含全部 9 種）基於 iHerb 2026/3 價格</div>`;
+  html += `<button id="add-sup-btn" style="width:100%;padding:12px;margin-top:12px;background:rgba(167,139,250,0.12);border:1px dashed rgba(167,139,250,0.4);border-radius:14px;color:#a78bfa;font-size:14px;font-weight:600;cursor:pointer">＋ 新增補充品</button>`;
+  html += `<div class="cost-footer">預估月費約 NT$2,100（含 ${getAllSupplements().length} 種）基於 iHerb 2026/3 價格</div>`;
   return html;
+}
+
+// ─── History ─────────────────────────────────────────────
+function renderHistory() {
+  const year = historyViewYear, month = historyViewMonth;
+  const monthNames = ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"];
+  const firstDay = new Date(year, month, 1).getDay(); // 0=Sun
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const today = getToday();
+  const allSups = getAllSupplements();
+
+  let html = `<div class="cal-nav">
+    <button id="cal-prev">◀</button>
+    <span>${year}年 ${monthNames[month]}</span>
+    <button id="cal-next">▶</button>
+  </div>
+  <div class="cal-weekdays"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div>
+  <div class="cal-grid">`;
+
+  // Empty cells before first day
+  for (let i = 0; i < firstDay; i++) html += `<div class="cal-cell empty"></div>`;
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dateStr = `${year}-${String(month+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+    const isToday = dateStr === today;
+    const isSel = dateStr === historySelectedDate;
+    const isFuture = dateStr > today;
+
+    let dotHtml = "";
+    if (!isFuture) {
+      const dayData = dateStr === today ? checkedItems : (history[dateStr] || null);
+      if (dayData) {
+        const checked = Object.values(dayData).filter(Boolean).length;
+        const rate = allSups.length > 0 ? checked / allSups.length : 0;
+        const dotColor = rate >= 1 ? "#34d399" : rate > 0 ? "#fbbf24" : "#475569";
+        dotHtml = `<div class="cal-dot" style="background:${dotColor}"></div>`;
+      }
+    }
+
+    html += `<div class="cal-cell${isToday?' today':''}${isSel?' selected':''}" data-cal-date="${dateStr}">
+      <span>${d}</span>${dotHtml}
+    </div>`;
+  }
+  html += `</div>`;
+
+  // Detail panel
+  const selData = historySelectedDate === today ? checkedItems : (history[historySelectedDate] || {});
+  html += `<div class="day-detail">
+    <div style="font-size:13px;color:#94a3b8;margin-bottom:8px">${historySelectedDate}${historySelectedDate === today ? '（今日）' : ''}</div>`;
+
+  if (allSups.length === 0) {
+    html += `<div style="font-size:13px;color:#475569;text-align:center;padding:20px">尚無補充品</div>`;
+  } else {
+    const checked = Object.values(selData).filter(Boolean).length;
+    const rate = Math.round(checked / allSups.length * 100);
+    html += `<div style="font-size:12px;color:#64748b;margin-bottom:8px">完成率：${rate}%（${checked}/${allSups.length}）</div>`;
+    for (const sup of allSups) {
+      const done = selData[sup.id];
+      html += `<div class="day-detail-item">
+        <span>${sup.emoji}</span>
+        <span style="flex:1">${sup.name}</span>
+        <span style="color:${done ? '#34d399' : '#475569'}">${done ? '✓' : '✗'}</span>
+      </div>`;
+    }
+  }
+  html += `</div>`;
+  return html;
+}
+
+// ─── Stats ───────────────────────────────────────────────
+function getCompletionHistory(days) {
+  const allSups = getAllSupplements();
+  const result = [];
+  for (let i = days - 1; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const dateStr = d.toISOString().split("T")[0];
+    const dayData = dateStr === getToday() ? checkedItems : (history[dateStr] || {});
+    const checked = Object.values(dayData).filter(Boolean).length;
+    result.push({ date: dateStr, rate: allSups.length > 0 ? Math.round(checked / allSups.length * 100) : 0 });
+  }
+  return result;
+}
+
+function getPerSupplementAdherence(days) {
+  const allSups = getAllSupplements();
+  return allSups.map(sup => {
+    let taken = 0;
+    for (let i = days - 1; i >= 0; i--) {
+      const d = new Date(); d.setDate(d.getDate() - i);
+      const dateStr = d.toISOString().split("T")[0];
+      const dayData = dateStr === getToday() ? checkedItems : (history[dateStr] || {});
+      if (dayData[sup.id]) taken++;
+    }
+    return { id: sup.id, name: sup.name, emoji: sup.emoji, color: sup.color, rate: Math.round(taken / days * 100) };
+  });
+}
+
+function getBestStreak(days) {
+  const allSups = getAllSupplements();
+  let best = 0, cur = 0;
+  for (let i = days - 1; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const dateStr = d.toISOString().split("T")[0];
+    const dayData = dateStr === getToday() ? checkedItems : (history[dateStr] || {});
+    const checked = Object.values(dayData).filter(Boolean).length;
+    if (allSups.length > 0 && checked === allSups.length) { cur++; best = Math.max(best, cur); }
+    else cur = 0;
+  }
+  return best;
+}
+
+function renderStats() {
+  const periods = [7, 30, 90];
+  let html = `<div class="stats-toggle">`;
+  for (const p of periods) {
+    html += `<button class="${statsSelectedPeriod===p?'active':''}" data-stat-period="${p}">${p}天</button>`;
+  }
+  html += `</div>`;
+
+  const allSups = getAllSupplements();
+  if (allSups.length === 0) {
+    return html + `<div style="text-align:center;color:#475569;padding:40px;font-size:14px">尚無補充品資料</div>`;
+  }
+
+  const histData = getCompletionHistory(statsSelectedPeriod);
+  const avgRate = histData.length > 0 ? Math.round(histData.reduce((s,d) => s + d.rate, 0) / histData.length) : 0;
+  const streak = getBestStreak(statsSelectedPeriod);
+  const adherence = getPerSupplementAdherence(statsSelectedPeriod);
+  const best = adherence.length > 0 ? adherence.reduce((a, b) => a.rate >= b.rate ? a : b) : null;
+  const worst = adherence.length > 0 ? adherence.reduce((a, b) => a.rate <= b.rate ? a : b) : null;
+
+  html += `<div class="stat-cards">
+    <div class="stat-card"><div class="sv">${avgRate}%</div><div class="sl">平均完成率</div></div>
+    <div class="stat-card"><div class="sv">${streak}</div><div class="sl">最佳連續天數</div></div>
+    <div class="stat-card"><div class="sv">${best ? best.emoji : '—'}</div><div class="sl">最高達成${best ? ` ${best.rate}%` : ''}</div></div>
+    <div class="stat-card"><div class="sv">${worst ? worst.emoji : '—'}</div><div class="sl">最需加強${worst ? ` ${worst.rate}%` : ''}</div></div>
+  </div>`;
+
+  // Line chart
+  html += `<div class="chart-box" style="margin-top:16px">
+    <div class="chart-title">📈 每日完成率趨勢</div>
+    <canvas id="trend-chart" style="width:100%;height:180px"></canvas>
+  </div>`;
+
+  // Bar chart
+  html += `<div class="chart-box">
+    <div class="chart-title">📊 各補充品達成率</div>
+    <canvas id="adherence-chart" style="width:100%;height:${Math.max(120, allSups.length * 32)}px"></canvas>
+  </div>`;
+
+  return html;
+}
+
+function drawLineChart(canvasId, data) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  ctx.scale(dpr, dpr);
+  const W = rect.width, H = rect.height;
+  const padL = 32, padR = 8, padT = 8, padB = 24;
+  const cW = W - padL - padR, cH = H - padT - padB;
+
+  // Gridlines
+  ctx.textAlign = "right"; ctx.font = "10px sans-serif";
+  for (const pct of [0, 25, 50, 75, 100]) {
+    const y = padT + cH * (1 - pct / 100);
+    ctx.strokeStyle = "rgba(255,255,255,0.06)"; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(padL, y); ctx.lineTo(padL + cW, y); ctx.stroke();
+    ctx.fillStyle = "#64748b"; ctx.fillText(pct + "%", padL - 4, y + 3);
+  }
+
+  if (data.length < 2) return;
+
+  // Data line
+  ctx.strokeStyle = "#a78bfa"; ctx.lineWidth = 2; ctx.lineJoin = "round"; ctx.lineCap = "round";
+  ctx.beginPath();
+  data.forEach((d, i) => {
+    const x = padL + (i / (data.length - 1)) * cW;
+    const y = padT + cH * (1 - d.rate / 100);
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+
+  // Gradient fill
+  const grad = ctx.createLinearGradient(0, padT, 0, padT + cH);
+  grad.addColorStop(0, "rgba(167,139,250,0.2)");
+  grad.addColorStop(1, "rgba(167,139,250,0)");
+  ctx.lineTo(padL + cW, padT + cH);
+  ctx.lineTo(padL, padT + cH);
+  ctx.closePath();
+  ctx.fillStyle = grad; ctx.fill();
+
+  // X-axis labels (show a few)
+  ctx.fillStyle = "#475569"; ctx.font = "9px sans-serif"; ctx.textAlign = "center";
+  const step = Math.max(1, Math.floor(data.length / 5));
+  for (let i = 0; i < data.length; i += step) {
+    const x = padL + (i / (data.length - 1)) * cW;
+    ctx.fillText(data[i].date.slice(5), x, H - 4);
+  }
+  // Always show last label
+  const lastX = padL + cW;
+  ctx.fillText(data[data.length - 1].date.slice(5), lastX, H - 4);
+
+  // Data points
+  data.forEach((d, i) => {
+    const x = padL + (i / (data.length - 1)) * cW;
+    const y = padT + cH * (1 - d.rate / 100);
+    ctx.beginPath(); ctx.arc(x, y, 2.5, 0, Math.PI * 2);
+    ctx.fillStyle = "#a78bfa"; ctx.fill();
+  });
+}
+
+function drawBarChart(canvasId, items) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas || items.length === 0) return;
+  const ctx = canvas.getContext("2d");
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  ctx.scale(dpr, dpr);
+  const W = rect.width, H = rect.height;
+  const padL = 4, padR = 40;
+  const barH = 22, gap = 8;
+  const startY = 4;
+
+  items.forEach((item, i) => {
+    const y = startY + i * (barH + gap);
+    const maxW = W - padL - padR - 30; // leave room for emoji and label
+    const emojiX = padL;
+    const barX = padL + 26;
+    const bW = Math.max(2, (item.rate / 100) * maxW);
+
+    // Emoji
+    ctx.font = "14px sans-serif"; ctx.textAlign = "left"; ctx.textBaseline = "middle";
+    ctx.fillText(item.emoji, emojiX, y + barH / 2);
+
+    // Bar bg
+    ctx.fillStyle = "rgba(255,255,255,0.04)";
+    ctx.beginPath(); ctx.roundRect(barX, y, maxW, barH, 6); ctx.fill();
+
+    // Bar fill
+    ctx.fillStyle = item.color + "90";
+    ctx.beginPath(); ctx.roundRect(barX, y, bW, barH, 6); ctx.fill();
+
+    // Rate text
+    ctx.fillStyle = "#94a3b8"; ctx.font = "11px sans-serif"; ctx.textAlign = "left";
+    ctx.fillText(item.rate + "%", barX + maxW + 6, y + barH / 2 + 1);
+  });
+}
+
+function postRender() {
+  if (currentTab === "stats") {
+    requestAnimationFrame(() => {
+      const histData = getCompletionHistory(statsSelectedPeriod);
+      drawLineChart("trend-chart", histData);
+      const adherence = getPerSupplementAdherence(statsSelectedPeriod);
+      drawBarChart("adherence-chart", adherence);
+    });
+  }
 }
 
 // ─── Events ──────────────────────────────────────────────
 function bindEvents() {
+  // Today tab - check items
   document.querySelectorAll("[data-check]").forEach(el => {
     el.onclick = () => {
       const id = el.dataset.check;
       checkedItems[id] = !checkedItems[id];
-      saveState();
-      render();
+      saveState(); render();
       if (getCompletionRate() === 100) {
         document.getElementById("confetti").classList.remove("hidden");
         setTimeout(() => document.getElementById("confetti").classList.add("hidden"), 3000);
       }
     };
   });
+  // Supply tab - date inputs
   document.querySelectorAll("[data-dateid]").forEach(el => {
-    el.onchange = () => {
-      startDates[el.dataset.dateid] = el.value;
-      saveState();
-      render();
-    };
+    el.onchange = () => { startDates[el.dataset.dateid] = el.value; saveState(); render(); };
   });
+  // Supply tab - arrive buttons
   document.querySelectorAll("[data-arrive]").forEach(el => {
-    el.onclick = () => {
-      const id = el.dataset.arrive;
-      arrivedStatus[id] = true;
-      startDates[id] = getToday();
-      saveState();
-      render();
-    };
+    el.onclick = () => { arrivedStatus[el.dataset.arrive] = true; startDates[el.dataset.arrive] = getToday(); saveState(); render(); };
+  });
+  // Stack tab - add supplement
+  const addBtn = document.getElementById("add-sup-btn");
+  if (addBtn) addBtn.onclick = () => openSupplementModal();
+  // Stack tab - edit supplement
+  document.querySelectorAll("[data-edit-sup]").forEach(el => {
+    el.onclick = (e) => { e.stopPropagation(); openSupplementModal(el.dataset.editSup); };
+  });
+  // History tab - calendar navigation
+  const calPrev = document.getElementById("cal-prev");
+  const calNext = document.getElementById("cal-next");
+  if (calPrev) calPrev.onclick = () => { historyViewMonth--; if (historyViewMonth < 0) { historyViewMonth = 11; historyViewYear--; } render(); };
+  if (calNext) calNext.onclick = () => { historyViewMonth++; if (historyViewMonth > 11) { historyViewMonth = 0; historyViewYear++; } render(); };
+  // History tab - date selection
+  document.querySelectorAll("[data-cal-date]").forEach(el => {
+    el.onclick = () => { historySelectedDate = el.dataset.calDate; render(); };
+  });
+  // Stats tab - period toggle
+  document.querySelectorAll("[data-stat-period]").forEach(el => {
+    el.onclick = () => { statsSelectedPeriod = parseInt(el.dataset.statPeriod); render(); };
   });
 }
 
@@ -424,6 +921,13 @@ document.querySelectorAll(".tab-btn").forEach(btn => {
 document.getElementById("confetti").onclick = () => {
   document.getElementById("confetti").classList.add("hidden");
 };
+
+// Modal events
+document.getElementById("sup-form").onsubmit = (e) => { e.preventDefault(); saveCustomSupplement(); };
+document.getElementById("modal-close").onclick = closeModal;
+document.getElementById("modal-cancel").onclick = closeModal;
+document.getElementById("modal-delete").onclick = () => { if (editingSupId) deleteCustomSupplement(editingSupId); };
+document.getElementById("sup-modal").onclick = (e) => { if (e.target.classList.contains("modal-overlay")) closeModal(); };
 
 // ─── Init ────────────────────────────────────────────────
 render();
