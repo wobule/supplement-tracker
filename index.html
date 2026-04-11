@@ -17,7 +17,7 @@ body {
   min-height: 100dvh;
 }
 #app { max-width: 480px; margin: 0 auto; padding-bottom: 80px; position: relative; }
-.header { padding: 20px 16px 12px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.06); }
+.header { padding: calc(env(safe-area-inset-top, 0px) + 20px) 16px 12px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.06); }
 .header h1 {
   font-size: 22px; font-weight: 700;
   background: linear-gradient(90deg, #a78bfa, #60a5fa);
